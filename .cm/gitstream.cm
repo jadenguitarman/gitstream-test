@@ -31,7 +31,7 @@ automations:
           url: "https://automation.atlassian.com/pro/hooks/4792097928cdf034a7d23fc50e198068ba19fb41"
           method: POST
           headers: '{"Content-type": "application/json"}'
-          body: '{"issues":["{{ticketid}}"]}'
+          body: '{ "issues": [ "{{ticketid}}" ], "data": { "pr_url": "https://github.com/{{repo.owner}}/{{repo.name}}/pull/{{pr.number}}" } }'
 
 has:
   ticket_in_title: {{ pr.title | includes(regex=tracker[provider].pattern) }}
