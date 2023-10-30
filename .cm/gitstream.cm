@@ -1,22 +1,48 @@
 # -*- mode: yaml -*-
+
 manifest:
   version: 1.0
+
+provider: jira
+
+orgName: jaden-test
+
+{% set ticketid = "" %}
+{% for ticket in tickets %}
+{% if (ticket | includes(regex=r/.+/)) %}
+{% set ticketid = ticket %}
+{% endif %}
+{% endfor %} 
+
 automations:
-  email_test: 
+  link_jira:
     if:
-      - true
+      - {{ has.ticket_in_title or has.ticket_in_branch }}
+    run:
+      - action: add-comment@v1
+        args:
+          comment: Issue Tracker Link - [{{ticketid}}]({{tracker[provider].baseurl}}{{ticketid}})
+  comment_in_jira: 
+    if:
+      - {{ has.ticket_in_title or has.ticket_in_branch }}
     run:
       - action: send-http-request@v1
         args:
           url: "https://automation.atlassian.com/pro/hooks/4792097928cdf034a7d23fc50e198068ba19fb41"
           method: POST
           headers: '{"Content-type": "application/json"}'
-          body: '{"issues":["KAN-1"]}'
-  estimated_time_to_review: 
-    if:
-      - true
-    run:
-      - action: add-label@v1
-        args:
-          label: "Label added by GitStream"
-          color: 'E94637'
+          body: '{"issues":["{{ticketid}}"]}'
+
+has:
+  ticket_in_title: {{ pr.title | includes(regex=tracker[provider].pattern) }}
+  ticket_in_branch: {{ branch.name | includes(regex=tracker[provider].pattern) }}
+
+tracker:
+  jira:
+    baseurl: https://[orgName].atlassian.net/browse/
+    pattern: r/\b[A-Za-z]+-\d+\b/
+
+tickets:
+  - {{branch.name | capture(regex=tracker[provider].pattern)}}
+  - {{pr.title | capture(regex=tracker[provider].pattern)}}
+
