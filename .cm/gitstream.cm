@@ -18,7 +18,7 @@ assigneeRegex: r/jira assign to (.*)\n/
 
 {% set assignee = "" %}
 {% if (pr.description | includes(regex=assigneeRegex)) %}
-{% set assignee = capture(regex=assigneeRegex) %}
+{% set assignee = pr.description | capture(regex=assigneeRegex) %}
 {% endif %}
 
 automations:
