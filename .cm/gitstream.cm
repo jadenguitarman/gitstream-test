@@ -14,7 +14,7 @@ orgName: jaden-test
 {% endif %}
 {% endfor %} 
 
-assigneeRegex: r/jira assign\: (.*)\n/
+assigneeRegex: r/jira assign to (.*)\n/
 
 {% set assignee = "" %}
 {% if (pr.description | includes(regex=assigneeRegex)) %}
