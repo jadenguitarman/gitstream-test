@@ -1,2 +1,2 @@
 # gitstream-test
-Test to activate KAN-1, now passing PR URL to Jira
+Test 2 to activate KAN-1, now passing PR URL to Jira
