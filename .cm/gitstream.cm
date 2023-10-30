@@ -14,24 +14,24 @@ orgName: jaden-test
 {% endif %}
 {% endfor %} 
 
+assigneeRegex: r/jira assign: (.*)\n/
+
+{% set assignee = "" %}
+{% if (pr.description | includes(regex=assigneeRegex)) %}
+{% set assignee = capture(regex=assigneeRegex) %}
+{% endif %}
+
 automations:
-  link_jira:
+  assign_in_jira: 
     if:
-      - {{ has.ticket_in_title or has.ticket_in_branch }}
-    run:
-      - action: add-comment@v1
-        args:
-          comment: Issue Tracker Link - [{{ticketid}}]({{tracker[provider].baseurl}}{{ticketid}})
-  comment_in_jira: 
-    if:
-      - {{ has.ticket_in_title or has.ticket_in_branch }}
+      - {{ assignee }}
     run:
       - action: send-http-request@v1
         args:
           url: "https://automation.atlassian.com/pro/hooks/4792097928cdf034a7d23fc50e198068ba19fb41"
           method: POST
           headers: '{"Content-type": "application/json"}'
-          body: '{"issues":["{{ticketid}}"],"data":{"pr_url":"https://github.com/{{repo.owner}}/{{repo.name}}/pull/{{pr.number}}"}}'
+          body: '{"issues":["{{ticketid}}"],"data":{"assignee":"{{assignee}}"}}'
 
 has:
   ticket_in_title: {{ pr.title | includes(regex=tracker[provider].pattern) }}
