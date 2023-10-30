@@ -1,2 +1,2 @@
 # gitstream-test
-1. This is the first PR change.
+Test to activate KAN-1, now passing PR URL to Jira
