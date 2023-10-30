@@ -19,7 +19,7 @@ assigneeRegex: r/jira assign to (.*)\n/
 automations:
   assign_in_jira: 
     if:
-      - {{ pr.description | includes(regex=assigneeRegex)) }}
+      - {{ pr.description | includes(regex=assigneeRegex) }}
     run:
       - action: send-http-request@v1
         args:
