@@ -7,14 +7,14 @@ provider: jira
 
 orgName: jaden-test
 
+assigneeRegex: r/jira assign to (.*)\n/
+
 {% set ticketid = "" %}
 {% for ticket in tickets %}
 {% if (ticket | includes(regex=r/.+/)) %}
 {% set ticketid = ticket %}
 {% endif %}
 {% endfor %} 
-
-assigneeRegex: r/jira assign to (.*)\n/
 
 {% set assignee = "" %}
 {% if (pr.description | includes(regex=assigneeRegex)) %}
