@@ -7,7 +7,7 @@ provider: jira
 
 orgName: jaden-test
 
-assigneeRegex: r/jira assign to (.*)\n/
+assigneeRegex: r/jira assign to (.*)/
 
 {% set ticketid = "" %}
 {% for ticket in tickets %}
