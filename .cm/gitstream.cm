@@ -16,22 +16,17 @@ assigneeRegex: r/jira assign to (.*)\n/
 {% endif %}
 {% endfor %} 
 
-{% set assignee = "" %}
-{% if (pr.description | includes(regex=assigneeRegex)) %}
-{% set assignee = pr.description | capture(regex=assigneeRegex) %}
-{% endif %}
-
 automations:
   assign_in_jira: 
     if:
-      - {{ assignee }}
+      - {{ pr.description | includes(regex=assigneeRegex)) }}
     run:
       - action: send-http-request@v1
         args:
           url: "https://automation.atlassian.com/pro/hooks/4792097928cdf034a7d23fc50e198068ba19fb41"
           method: POST
           headers: '{"Content-type": "application/json"}'
-          body: '{"issues":["{{ticketid}}"],"data":{"assignee":"{{assignee}}"}}'
+          body: '{"issues":["{{ticketid}}"],"data":{"assignee":"{{pr.description | capture(regex=assigneeRegex)}}"}}'
 
 has:
   ticket_in_title: {{ pr.title | includes(regex=tracker[provider].pattern) }}
