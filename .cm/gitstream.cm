@@ -27,6 +27,13 @@ automations:
           method: POST
           headers: '{"Content-type": "application/json"}'
           body: '{"issues":["{{ticketid}}"],"data":{"assignee":"{{pr.description | capture(regex=assigneeRegex)}}"}}'
+  link_jira:
+    if:
+      - {{ pr.description | includes(regex=assigneeRegex) }}
+    run:
+      - action: add-comment@v1
+        args:
+          comment: {{pr.description | capture(regex=assigneeRegex)}}
 
 has:
   ticket_in_title: {{ pr.title | includes(regex=tracker[provider].pattern) }}
