@@ -11,4 +11,4 @@ automations:
       - action: send-slack-message@v1
         args:
           message: "A message sent from GitStream!"
-          webhook_url: "https://hooks.slack.com/services/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"
+          webhook_url: "https://hooks.slack.com/services/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"
