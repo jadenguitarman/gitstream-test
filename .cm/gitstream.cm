@@ -4,20 +4,17 @@ manifest:
   version: 1.0
 
 automations:
-  senior_review:
-    if:
-      - true
-    run:
-      - action: add-comment@v1
-        args:
-          comment: "{{ env.SLACK_WEBHOOK }}"
   send_webhook:
     if:
       - true
     run:
       - action: send-http-request@v1
         args:
-          url: "{{ env.SLACK_WEBHOOK }}"
+          url: "https://hooks.slack.com/services/{{slack_webhook_part_1}}/{{slack_webhook_part_2}}/{{slack_webhook_part_3}}"
           method: POST
           headers: '{"Content-type": "application/json"}'
           body: '{"text": "A message sent from GitStream!"}'
+
+slack_webhook_part_1: T048MF741A5
+slack_webhook_part_2: B065QPDABFU
+slack_webhook_part_3: E0bJ9OZRaaamEdR1aXrPSAiS
