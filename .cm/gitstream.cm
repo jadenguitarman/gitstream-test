@@ -10,7 +10,7 @@ automations:
     run:
       - action: send-http-request@v1
         args:
-          url: "https://hooks.slack.com/services/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"
+          url: "https://hooks.slack.com/services/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"
           method: POST
           headers: '{"Content-type": "application/json"}'
           body: '{"text": "A message sent from GitStream!"}'
