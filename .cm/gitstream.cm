@@ -10,12 +10,12 @@ automations:
     run:
       - action: add-comment@v1
         args:
-          comment: "{{ env.SLACK_WEBHOOK }}"
+          comment: {{ env.SLACK_WEBHOOK }}
   send_slack:
     if:
       - true
     run:
       - action: send-slack-message@v1
         args:
-          webhook_url: "{{ env.SLACK_WEBHOOK }}"
+          webhook_url: {{ env.SLACK_WEBHOOK }}
           message: "A message sent from GitStream!"
