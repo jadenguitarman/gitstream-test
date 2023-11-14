@@ -4,11 +4,13 @@ manifest:
   version: 1.0
 
 automations:
-  send_slack:
+  send_webhook:
     if:
       - true
     run:
-      - action: send-slack-message@v1
+      - action: send-http-request@v1
         args:
-          message: "A message sent from GitStream!"
-          webhook_url: "https://hooks.slack.com/services/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"
+          url: "https://hooks.slack.com/services/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"
+          method: POST
+          headers: '{"Content-type": "application/json"}'
+          body: '{"text": "A message sent from GitStream!"}'
