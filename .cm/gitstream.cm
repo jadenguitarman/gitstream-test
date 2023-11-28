@@ -10,7 +10,7 @@ automations:
     run:
       - action: send-slack-message@v1
         args:
-          webhook_url: {{ env.SLACK_WEBHOOK }}
+          webhook_url: "{{ env.SLACK_WEBHOOK }}"
           message: "A message sent from GitStream! a"
   send_webhook:
     if:
@@ -18,7 +18,7 @@ automations:
     run:
       - action: send-http-request@v1
         args:
-          url: {{ env.SLACK_WEBHOOK }}
+          url: "{{ env.SLACK_WEBHOOK }}"
           method: POST
           headers: '{"Content-type": "application/json"}'
           body: '{"text": "A message sent from GitStream! b"}'
