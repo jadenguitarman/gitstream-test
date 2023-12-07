@@ -20,7 +20,7 @@ automations:
         args:
           comment: {{ experts }}
 
-experts: {{ codeExperts(gt=10) }}
+experts: {{ repo | codeExperts(gt=10) }}
 
 slack_keys:
   jadenguitarman: {{ env.GITSTREAM_SLACK_JADEN }}
