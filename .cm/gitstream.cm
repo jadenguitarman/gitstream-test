@@ -10,7 +10,7 @@ automations:
     run:
       - action: send-slack-message@v1
         args:
-          webhook_url: "{{ env.SLACK_WEBHOOK }}"
+          webhook_url: "{{ slack_keys[experts] }}"
           message: "A message sent from GitStream!"
   test_nested:
     if:
