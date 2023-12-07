@@ -19,8 +19,13 @@ automations:
       - action: add-comment@v1
         args:
           comment: {{ experts }}
+  code_experts:
+    if:
+      - true
+    run:
+      - action: explain-code-experts@v1 
 
-experts: {{ repo | codeExperts(gt=10) }}
+experts: {{ repo | codeExperts() }}
 
 slack_keys:
   jadenguitarman: {{ env.GITSTREAM_SLACK_JADEN }}
