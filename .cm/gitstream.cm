@@ -11,14 +11,18 @@ automations:
       - action: send-slack-message@v1
         args:
           webhook_url: "{{ env.SLACK_WEBHOOK }}"
-          message: "A message sent from GitStream! a"
-  send_webhook:
+          message: "A message sent from GitStream!"
+  test_nested:
     if:
       - true
     run:
-      - action: send-http-request@v1
+      - action: add-comment@v1
         args:
-          url: "{{ env.SLACK_WEBHOOK }}"
-          method: POST
-          headers: '{"Content-type": "application/json"}'
-          body: '{"text": "A message sent from GitStream! b"}'
+          comment: {{ colors[c] }}
+
+c: "red"
+
+colors:
+  red: 'b60205'
+  yellow: 'fbca04'
+  green: '0e8a16'
