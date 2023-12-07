@@ -18,18 +18,10 @@ automations:
     run:
       - action: add-comment@v1
         args:
-          comment: {{ colors[c] }}
-  code_experts:
-    if:
-      - true
-    run:
-      - action: explain-code-experts@v1 
-        args:
-          gt: 10
+          comment: {{ experts }}
 
-c: "red"
+experts: {{ codeExperts(gt=10) }}
 
-colors:
-  red: 'b60205'
-  yellow: 'fbca04'
-  green: '0e8a16'
+slack_keys:
+  jadenguitarman: {{ env.GITSTREAM_SLACK_JADEN }}
+  elena: {{ env.GITSTREAM_SLACK_ELENA }}
