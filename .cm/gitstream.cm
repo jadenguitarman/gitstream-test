@@ -12,13 +12,6 @@ automations:
         args:
           webhook_url: "{{ slack_keys[experts] }}"
           message: "A message sent from GitStream!"
-  test_nested:
-    if:
-      - true
-    run:
-      - action: add-comment@v1
-        args:
-          comment: {{ experts }}
   code_experts:
     if:
       - true
@@ -31,4 +24,4 @@ experts: {{ repo | codeExperts(gt=0) }}
 
 slack_keys:
   jadenguitarman: {{ env.GITSTREAM_SLACK_JADEN }}
-  elena: {{ env.GITSTREAM_SLACK_ELENA }}
+  elenas-github-account: {{ env.GITSTREAM_SLACK_ELENA }}
