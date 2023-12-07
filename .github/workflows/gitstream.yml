@@ -31,8 +31,8 @@ jobs:
     name: gitStream workflow automation
     env: 
       SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-      GITSREAM_SLACK_JADEN: ${{ secrets.GITSTREAM_SLACK_JADEN }}
-      GITSREAM_SLACK_ELENA: ${{ secrets.GITSTREAM_SLACK_ELENA }}
+      GITSTREAM_SLACK_JADEN: ${{ secrets.GITSTREAM_SLACK_JADEN }}
+      GITSTREAM_SLACK_ELENA: ${{ secrets.GITSTREAM_SLACK_ELENA }}
     steps:
       - name: Evaluate Rules
         uses: linear-b/gitstream-github-action@v1
