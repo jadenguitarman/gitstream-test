@@ -2,26 +2,13 @@
 
 manifest:
   version: 1.0
-
+  
 automations:
-  send_slack:
+  send_slack_qa:
     if:
-      - true
+      - {{ files | not match(regex=r/(test|spec)/) | some }}
     run:
       - action: send-slack-message@v1
         args:
-          webhook_url: "{{ slack_keys[experts] }}"
-          message: "A message sent from GitStream!"
-  code_experts:
-    if:
-      - true
-    run:
-      - action: explain-code-experts@v1 
-        args:
-          gt: 0
-
-experts: {{ repo | codeExperts(gt=0) | first }}
-
-slack_keys:
-  jadenguitarman: {{ env.GITSTREAM_SLACK_JADEN }}
-  elenas-github-account: {{ env.GITSTREAM_SLACK_ELENA }}
+          webhook_url: "{{ env.SLACK_WEBHOOK }}"
+          message: "A PR was submitted without tests. See https://github.com/{{ repo.owner }}/{{ repo.name }}/pull/{{ pr.number }}"
