@@ -6,7 +6,7 @@ manifest:
 automations:
   send_slack_qa:
     if:
-      - {{ files | not match(regex=r/(test|spec)/) | some }}
+      - {{ not (files | match(regex=r/(test|spec)/) | some) }}
     run:
       - action: send-slack-message@v1
         args:
