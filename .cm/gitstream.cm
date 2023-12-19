@@ -4,6 +4,7 @@ manifest:
   version: 1.0
 
 shortcut_regex: r/.+\(shortcut [0-9]+\)/
+has_shortcut: {{ pr.title | includes(regex=shortcut_regex) }}
 
 pr_url: "https://github.com/{{ repo.owner }}/{{ repo.name }}/pull/{{ pr.number }}"
 
@@ -12,7 +13,7 @@ on:
 automations:
   create_shortcut_story:
     if:
-      - {{ pr.title | not includes(regex=shortcut_regex) }}
+      - {{ not has_shortcut }}
     run:
       - action: send-http-request@v1
         args:
@@ -22,7 +23,7 @@ automations:
           body: '{ "name": "PR Review {{pr.number}}: \"{{pr.title}}\"", "description": "See {{ pr_url }}", "workflow_state_id": 3 }'
   update_shortcut_story:
     if:
-      - {{ pr.title | includes(regex=shortcut_regex) }}
+      - {{ has_shortcut }}
     run:
       - action: send-http-request@v1
         args:
