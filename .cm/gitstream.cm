@@ -10,6 +10,7 @@ automations:
     if:
       - true
     run:
-      - action: add-comment@v1
+      - action: send-slack-message@v1
         args:
-          comment: {{ pr.reviewers }}
+          webhook_url: {{ SLACK_WEBHOOK }}
+          message: '{ reviewers: "{{ pr.reviewers }}" }'
