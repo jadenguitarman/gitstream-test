@@ -13,4 +13,4 @@ automations:
       - action: send-slack-message@v1
         args:
           webhook_url: "{{ env.SLACK_WEBHOOK }}"
-          message: '{ reviewers: "{{ pr.reviewers }}" }'
+          message: '{ "reviewers": "{{ pr.reviewers }}" }'
