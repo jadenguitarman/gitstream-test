@@ -3,14 +3,20 @@
 manifest:
   version: 1.0
 
-pr_url: "https://github.com/{{ repo.owner }}/{{ repo.name }}/pull/{{ pr.number }}"
+shortcut_regex: r/.+\(shortcut [0-9]+\)/
+has:
+	shortcut: {{ pr.title | includes(regex=shortcut_regex) }}
 
+on:
+  - comment_added
 automations:
-  add_comment:
+  pass_comment_to_shortcut:
     if:
-      - true
+      - {{ has_shortcut }}
     run:
-      - action: send-slack-message@v1
+      - action: send-http-request@v1
         args:
-          webhook_url: "{{ env.SLACK_WEBHOOK }}"
-          message: '{ "reviewers": "{{ pr.reviewers }}" }'
+          url: "https://api.app.shortcut.com/api/v3/stories/{{ pr.title | capture(regex=shortcut_regex) }}/comments"
+          method: "POST"
+          headers: '{"Content-Type: application/json", "Shortcut-Token: {{ env.SHORTCUT_API_TOKEN }}"}'
+          body: '{ "text": "See {{ pr.comments | map(attr="content") | last }}" }'
