@@ -21,7 +21,7 @@ automations:
           url: "https://api.app.shortcut.com/api/v3/stories"
           method: "POST"
           headers: '{"Content-Type": "application/json", "Shortcut-Token": "{{ env.SHORTCUT_API_TOKEN }}"}'
-          body: '{ "name": "PR Review {{pr.number}}: \"{{pr.title}}\"", "description": "See {{ pr_url }}", "workflow_state_id": 3 }'
+          body: '{ "name": "PR Review {{pr.number}}: \"{{pr.title}}\"", "description": "See {{ pr_url }}", "workflow_state_id": 500000009 }'
   update_shortcut_story:
     if:
       - {{ has.shortcut }}
@@ -31,4 +31,4 @@ automations:
           url: "https://api.app.shortcut.com/api/v3/stories/{{ pr.title | capture(regex=shortcut_regex) }}"
           method: "PUT"
           headers: '{"Content-Type": "application/json", "Shortcut-Token": "{{ env.SHORTCUT_API_TOKEN }}"}'
-          body: '{ "description": "See {{ pr_url }}", "workflow_state_id": 3 }'
+          body: '{ "description": "See {{ pr_url }}", "workflow_state_id": 500000009 }'
