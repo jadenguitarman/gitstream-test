@@ -28,7 +28,7 @@ automations:
     run:
       - action: send-http-request@v1
         args:
-          url: "https://api.app.shortcut.com/api/v3/stories"
+          url: "https://api.app.shortcut.com/api/v3/stories/{{ pr.title | capture(regex=shortcut_regex) }}"
           method: "PUT"
           headers: '{"Content-Type": "application/json", "Shortcut-Token": "{{ env.SHORTCUT_API_TOKEN }}"}'
-          body: '{ "story-public-id": "{{ pr.title | capture(regex=shortcut_regex) }}", "description": "See {{ pr_url }}", "workflow_state_id": 3 }'
+          body: '{ "description": "See {{ pr_url }}", "workflow_state_id": 3 }'
