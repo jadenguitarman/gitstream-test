@@ -19,4 +19,4 @@ automations:
           url: "https://api.app.shortcut.com/api/v3/stories/{{ pr.title | capture(regex=shortcut_regex) }}/comments"
           method: "POST"
           headers: '{"Content-Type": "application/json", "Shortcut-Token": "{{ env.SHORTCUT_API_TOKEN }}"}'
-          body: '{ "text": "See {{ pr.comments | map(attr="content") | last }}" }'
+          body: '{ "text": "{{ pr.comments | map(attr="content") | last }} - See https://github.com/{{ repo.owner }}/{{ repo.name }}/pull/{{ pr.number }}" }'
