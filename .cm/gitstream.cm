@@ -3,20 +3,32 @@
 manifest:
   version: 1.0
 
-shortcut_regex: r/(?<=shortcut )[0-9]*/
+shortcut_regex: r/.+\(shortcut [0-9]+\)/
 has:
-  shortcut: {{ pr.title | includes(regex=shortcut_regex) }}
+	shortcut: {{ pr.title | includes(regex=shortcut_regex) }}
+
+pr_url: "https://github.com/{{ repo.owner }}/{{ repo.name }}/pull/{{ pr.number }}"
 
 on:
-  - comment_added
+  - pr_created
 automations:
-  pass_comment_to_shortcut:
+  create_shortcut_story:
+    if:
+      - {{ not has.shortcut }}
+    run:
+      - action: send-http-request@v1
+        args:
+          url: "https://api.app.shortcut.com/api/v3/stories"
+          method: "POST"
+          headers: '{"Content-Type: application/json", "Shortcut-Token: {{ env.SHORTCUT_API_TOKEN }}"}'
+          body: '{ "name": "PR Review {{pr.number}}: \"{{pr.title}}\"", "description": "See {{ pr_url }}", "workflow_state_id": 3 }'
+  update_shortcut_story:
     if:
       - {{ has.shortcut }}
     run:
       - action: send-http-request@v1
         args:
-          url: "https://api.app.shortcut.com/api/v3/stories/{{ pr.title | capture(regex=shortcut_regex) }}/comments"
-          method: "POST"
-          headers: '{"Content-Type": "application/json", "Shortcut-Token": "{{ env.SHORTCUT_API_TOKEN }}"}'
-          body: '{ "text": "{{ pr.comments | map(attr="content") | last }} - See https://github.com/{{ repo.owner }}/{{ repo.name }}/pull/{{ pr.number }}" }'
+          url: "https://api.app.shortcut.com/api/v3/stories"
+          method: "PUT"
+          headers: '{"Content-Type: application/json", "Shortcut-Token: {{ env.SHORTCUT_API_TOKEN }}"}'
+          body: '{ "story-public-id": "{{ pr.title | capture(regex=shortcut_regex) }}", "description": "See {{ pr_url }}", "workflow_state_id": 3 }'
