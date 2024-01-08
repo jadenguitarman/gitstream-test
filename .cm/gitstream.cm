@@ -3,7 +3,7 @@
 manifest:
   version: 1.0
 
-shortcut_regex: r/.+\(shortcut [0-9]+\)/
+shortcut_regex: r/(?<=shortcut )[0-9]*/
 has:
   shortcut: {{ pr.title | includes(regex=shortcut_regex) }}
 
