@@ -5,7 +5,7 @@ manifest:
 
 shortcut_regex: r/.+\(shortcut [0-9]+\)/
 has:
-	shortcut: {{ pr.title | includes(regex=shortcut_regex) }}
+  shortcut_regex: r/(?<=shortcut )[0-9]*/
 
 pr_url: "https://github.com/{{ repo.owner }}/{{ repo.name }}/pull/{{ pr.number }}"
 
