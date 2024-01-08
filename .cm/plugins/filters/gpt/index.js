@@ -54,6 +54,6 @@ module.exports = {
     */
     return results.choices.length > 0
       ? callback(null, results.choices[0].message.content)
-      : callback("No response, "");
+      : callback("No response", "");
   }
 }
