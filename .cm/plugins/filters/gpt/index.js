@@ -1,7 +1,7 @@
 module.exports = {
   async: true,
   filter: async (title, description, comments, prurl, callback) => {
-    return callback(null, "Hey, could you quickly review the 'Update README.md' PR? It adds an example of using Human as a Tool, linked to the wiki. Thanks!")
+    return callback(null, "Hey, could you quickly review the 'Update README.md' PR? It adds an example of the ChatGPT integration, linked to the docs. Thanks!")
 
     /*
     const OPENAI_API_KEY = "";
