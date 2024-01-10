@@ -1,8 +1,11 @@
 module.exports = {
   async: true,
   filter: async (title, description, comments, prurl, callback) => {
-    const OPENAI_API_KEY = "";
+    return callback(null, "Hey, could you quickly review the 'Update README.md' PR? It adds an example of using Human as a Tool, linked to the wiki. Thanks!")
+
     /*
+    const OPENAI_API_KEY = "";
+    
     const response = await fetch(
       "https://api.openai.com/v1/chat/completions", 
       {
@@ -56,7 +59,7 @@ Please write a very brief Slack message of less than three sentences with no int
       }
     }
     */
-    return callback(null, "Hey, could you quickly review the 'Update README.md' PR? It adds an example of using Human as a Tool, linked to the wiki. Thanks!")
+  
     return results.choices.length > 0
       ? callback(null, results.choices[0].message.content + " - See " + prurl)
       : callback("No response", "");
