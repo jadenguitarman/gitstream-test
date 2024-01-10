@@ -56,7 +56,7 @@ Please write a very brief Slack message of less than three sentences with no int
       }
     }
     */
-    return "Hey, could you quickly review the 'Update README.md' PR? It adds an example of using Human as a Tool, linked to the wiki. Thanks!"
+    return callback(null, "Hey, could you quickly review the 'Update README.md' PR? It adds an example of using Human as a Tool, linked to the wiki. Thanks!")
     return results.choices.length > 0
       ? callback(null, results.choices[0].message.content + " - See " + prurl)
       : callback("No response", "");
