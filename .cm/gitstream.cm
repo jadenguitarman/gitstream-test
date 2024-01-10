@@ -3,32 +3,14 @@
 manifest:
   version: 1.0
 
-shortcut_regex: r/(?<=shortcut )[0-9]*/
-has:
-  shortcut: {{ pr.title | includes(regex=shortcut_regex) }}
-
-pr_url: "https://github.com/{{ repo.owner }}/{{ repo.name }}/pull/{{ pr.number }}"
-
-on:
-  - pr_created
 automations:
-  create_shortcut_story:
+  create_gpt_description:
     if:
-      - {{ not has.shortcut }}
+      - true
     run:
-      - action: send-http-request@v1
+      - action: add-comment@v1
         args:
-          url: "https://api.app.shortcut.com/api/v3/stories"
-          method: "POST"
-          headers: '{"Content-Type": "application/json", "Shortcut-Token": "{{ env.SHORTCUT_API_TOKEN }}"}'
-          body: '{ "name": "PR Review {{pr.number}}: \"{{pr.title}}\"", "description": "See {{ pr_url }}", "workflow_state_id": 500000009 }'
-  update_shortcut_story:
-    if:
-      - {{ has.shortcut }}
-    run:
-      - action: send-http-request@v1
-        args:
-          url: "https://api.app.shortcut.com/api/v3/stories/{{ pr.title | capture(regex=shortcut_regex) }}"
-          method: "PUT"
-          headers: '{"Content-Type": "application/json", "Shortcut-Token": "{{ env.SHORTCUT_API_TOKEN }}"}'
-          body: '{ "description": "See {{ pr_url }}", "workflow_state_id": 500000009 }'
+          comment: |
+            Title: {{ pr.title }}
+            Description: {{ pr.description }}
+            Comments: {{ pr.comments | map(attr="content") }}
