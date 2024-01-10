@@ -3,14 +3,14 @@
 manifest:
   version: 1.0
 
+pr_url: "https://github.com/{{ repo.owner }}/{{ repo.name }}/pull/{{ pr.number }}"
+
 automations:
   create_gpt_description:
     if:
       - true
     run:
-      - action: add-comment@v1
+      - action: send-slack-message@v1
         args:
-          comment: |
-            Title: {{ pr.title }}
-            Description: {{ pr.description }}
-            Comments: {{ pr.comments | map(attr="content") }}
+          message: {{ pr.title | gpt(pr.description, pr.comments, pr_url) }}
+          webhook_url: "{{ env.SLACK_WEBHOOK }}"
