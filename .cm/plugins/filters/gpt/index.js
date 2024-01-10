@@ -1,6 +1,6 @@
 module.exports = {
   async: true,
-  filter: async (context, prompt, callback) => {
+  filter: async (title, description, comments, callback) => {
     const OPENAI_API_KEY = "";
     const response = await fetch(
       "https://api.openai.com/v1/chat/completions", 
@@ -9,12 +9,15 @@ module.exports = {
           "model": "gpt-3.5-turbo", 
           "messages": [ 
             {
-              "role": "system",
-              "content": context
-            }, 
-            {
               "role": "user",
-              "content": prompt
+              "content": `The following is information about a pull request:
+
+Title: ${title}
+Description: ${description}
+Comments: 
+  ${comments.map(x => x.content).join("\n\t")}
+
+Please write a message to the maintainer of this repo asking them politely to review this PR. Include a description of this PR in a maximum of two-sentences.`
             }
           ]
         }),
