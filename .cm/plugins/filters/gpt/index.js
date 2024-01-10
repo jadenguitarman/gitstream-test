@@ -1,6 +1,6 @@
 module.exports = {
   async: true,
-  filter: async (title, description, comments, callback) => {
+  filter: async (title, description, comments, prurl, callback) => {
     const OPENAI_API_KEY = "";
     const response = await fetch(
       "https://api.openai.com/v1/chat/completions", 
@@ -17,7 +17,7 @@ Description: ${description}
 Comments: 
   ${comments.map(x => x.content).join("\n\t")}
 
-Please write a message to the maintainer of this repo asking them politely to review this PR. Include a description of this PR in a maximum of two-sentences.`
+Please write a very brief Slack message of less than three sentences with no introduction or subject asking the recipient to review this PR. Include a short description. Don't mention the recipient's name.`
             }
           ]
         }),
@@ -56,7 +56,7 @@ Please write a message to the maintainer of this repo asking them politely to re
     }
     */
     return results.choices.length > 0
-      ? callback(null, results.choices[0].message.content)
+      ? callback(null, results.choices[0].message.content + " - See " + prurl)
       : callback("No response", "");
   }
 }
