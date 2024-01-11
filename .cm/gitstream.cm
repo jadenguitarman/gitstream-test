@@ -12,5 +12,5 @@ automations:
     run:
       - action: send-slack-message@v1
         args:
-          message: {{ checklist }}
+          message: "{{ checklist }}"
           webhook_url: "{{ env.SLACK_WEBHOOK }}"
