@@ -10,5 +10,5 @@ automations:
     run:
       - action: send-slack-message@v1
         args:
-          message: {{ "" | gpt }}
+          message: {{ "" | gpt | dump }}
           webhook_url: "{{ env.SLACK_WEBHOOK }}"
