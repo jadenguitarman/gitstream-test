@@ -3,7 +3,7 @@
 manifest:
   version: 1.0
 
-checklist: {{ "" | gpt | dump }}
+checklist: {{ "" | gpt(pr.comments) | dump }}
 
 automations:
   comment_with_checklist:
@@ -12,5 +12,6 @@ automations:
     run:
       - action: send-slack-message@v1
         args:
-          message: "{{ checklist }}"
+          message: | 
+            {{ checklist }}
           webhook_url: "{{ env.SLACK_WEBHOOK }}"
