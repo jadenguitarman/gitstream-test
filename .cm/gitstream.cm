@@ -3,7 +3,7 @@
 manifest:
   version: 1.0
 
-checklist: {{ "" | gpt(pr.comments) | dump }}
+checklist: {{ "" | gpt | dump }}
 
 automations:
   comment_with_checklist:
