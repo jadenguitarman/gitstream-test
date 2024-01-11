@@ -66,9 +66,11 @@ Please write a very brief Slack message of less than three sentences with no int
       }
     }
     */
-  
+    /*
+    
     return results.choices.length > 0
       ? callback(null, results.choices[0].message.content + " - See " + prurl)
       : callback("No response", "");
+    */
   }
 }
