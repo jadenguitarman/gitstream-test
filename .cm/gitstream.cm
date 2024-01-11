@@ -5,11 +5,11 @@ manifest:
 
 urgency: {{ pr.title | gpt(pr.description) }}
 colors:
-	urgency-level-1: 'BE2908'
-	urgency-level-2: 'F5881B'
-	urgency-level-3: 'F7D515'
-	urgency-level-4: '84C42A'
-	urgency-level-5: '559200'
+  urgency-level-1: 'BE2908'
+  urgency-level-2: 'F5881B'
+  urgency-level-3: 'F7D515'
+  urgency-level-4: '84C42A'
+  urgency-level-5: '559200'
 
 on:
   - pr_created
