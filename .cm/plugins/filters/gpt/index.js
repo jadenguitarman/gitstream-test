@@ -1,6 +1,7 @@
 module.exports = {
   async: true,
   filter: async (title, description, callback) => {
+    console.log("in gpt");
     return callback(null, 
 `- [ ] **Documentation Clarity:** Ensure the README is not overly crowded and consider moving detailed examples to the wiki.
 - [ ] **Wiki Update:** Confirm that the example has been added to the wiki, specifically under the \`agentTools\` section.
