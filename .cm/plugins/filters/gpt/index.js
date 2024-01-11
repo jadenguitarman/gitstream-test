@@ -1,6 +1,6 @@
 module.exports = {
   async: true,
-  filter: async (title, description, comments, prurl, callback) => {
+  filter: async (title, description, callback) => {
     return callback(null, "urgency-level-3")
 
     /*
