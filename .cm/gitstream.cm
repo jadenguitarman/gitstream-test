@@ -3,14 +3,22 @@
 manifest:
   version: 1.0
 
-pr_url: "https://github.com/{{ repo.owner }}/{{ repo.name }}/pull/{{ pr.number }}"
+urgency: {{ pr.title | gpt(pr.description) }}
+colors:
+	urgency-level-1: #BE2908
+	urgency-level-2: #F5881B
+	urgency-level-3: #F7D515
+	urgency-level-4: #84C42A
+	urgency-level-5: #559200
 
+on:
+	- pr_created
 automations:
-  create_gpt_description:
+  add_urgency_label:
     if:
       - true
     run:
-      - action: send-slack-message@v1
+      - action: add-label@v1
         args:
-          message: {{ pr.title | gpt(pr.description, pr.comments, pr_url) }}
-          webhook_url: "{{ env.SLACK_WEBHOOK }}"
+          label: {{ urgency }}
+          color: {{ colors[urgency] }}
