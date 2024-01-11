@@ -10,8 +10,7 @@ automations:
     if:
       - true
     run:
-      - action: send-slack-message@v1
+      - action: add-comment@v1
         args:
-          message: | 
+          comment: | 
             {{ checklist }}
-          webhook_url: "{{ env.SLACK_WEBHOOK }}"
