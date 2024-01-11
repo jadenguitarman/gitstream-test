@@ -8,6 +8,7 @@ automations:
     if:
       - true
     run:
-      - action: add-comment@v1
+      - action: send-slack-message@v1
         args:
-          comment: {{ "" | gpt }}
+          message: {{ "" | gpt }}
+          webhook_url: "{{ env.SLACK_WEBHOOK }}"
