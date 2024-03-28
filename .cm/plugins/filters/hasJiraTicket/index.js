@@ -2,6 +2,8 @@ module.exports = {
 	async: true,
 	filter: async (inputString, password, callback) => {
 		console.log("in filter");
+		console.log("inputString is: " + inputString);
+		console.log("password length is: " + password.length);
 		
 		const resp = await fetch('https://jadenjbaptista.atlassian.net/rest/api/2/search', {
 			method: 'POST',
@@ -17,6 +19,7 @@ module.exports = {
 		});
 
 		const results = await resp.json();
+		console.log(results);
 		/*
 			{
 				"expand":"names,schema",
