@@ -1,6 +1,6 @@
 module.exports = {
 	async: true,
-	filter: async (password, callback) => {
+	filter: async (inputString, password, callback) => {
 		console.log("in filter");
 		
 		const resp = await fetch('https://jadenjbaptista.atlassian.net/rest/api/2/search', {
@@ -10,7 +10,7 @@ module.exports = {
 				'Authorization': 'Basic ' + btoa(`jadenjbaptista@gmail.com:${password}`)
 			},
 			body: JSON.stringify({
-				'jql': 'key = KAN-1',
+				'jql': `key = ${inputString}`,
 				'maxResults': 1,
 				'fields': [ 'assignee' ]
 			})
