@@ -12,7 +12,7 @@ module.exports = {
 				'Authorization': 'Basic ' + btoa(`jadenjbaptista@gmail.com:${password}`)
 			},
 			body: JSON.stringify({
-				'jql': `key = ${inputString}`,
+				'jql': `"key = ${inputString}"`,
 				'maxResults': 1,
 				'fields': [ 'assignee' ]
 			})
