@@ -3,7 +3,7 @@
 manifest:
   version: 1.0
 
-checklist: {{ "" | gpt | dump }}
+output: {{ pr.title | hasJiraTicket(env.JIRA_API_TOKEN) }}
 
 automations:
   comment_with_checklist:
@@ -13,4 +13,4 @@ automations:
       - action: add-comment@v1
         args:
           comment: | 
-            {{ checklist }}
+            {{ output }}
