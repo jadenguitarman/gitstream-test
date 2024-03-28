@@ -38,6 +38,6 @@ module.exports = {
 			}
   		*/
 		
-		return callback(null,  !!results.issues.length);
+		return callback(null,  !!results.issues?.length);
 	}
 }
