@@ -4,6 +4,8 @@ module.exports = {
 		console.log("in filter");
 		console.log("inputString is: " + inputString);
 		console.log("password length is: " + password.length);
+		const jql = `key = '${inputString}'`;
+		console.log("jql: " + jql);
 		
 		const resp = await fetch('https://jadenjbaptista.atlassian.net/rest/api/2/search', {
 			method: 'POST',
@@ -12,7 +14,7 @@ module.exports = {
 				'Authorization': 'Basic ' + btoa(`jadenjbaptista@gmail.com:${password}`)
 			},
 			body: JSON.stringify({
-				'jql': `key = '${inputString}'`,
+				'jql': jql,
 				'maxResults': 1,
 				'fields': [ 'assignee' ]
 			})
