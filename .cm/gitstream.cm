@@ -3,16 +3,11 @@
 manifest:
   version: 1.0
 
-has_jira_ticket: {{ pr.title | hasJiraTicket(env.JIRA_API_TOKEN) }}
-
 automations:
-  add_jira: 
+  checklist: 
     if:
-      - {{ not has_jira_ticket }}
+      - {{ true }}
     run:
-      - action: send-http-request@v1
+      - action: add-comment@v1
         args:
-          url: "https://automation.atlassian.com/pro/hooks/5cc59bbc6b769bdaec58d4f83b01e1e39e7d2e29"
-          method: POST
-          headers: '{"Content-type": "application/json"}'
-          body: '{"data":{"pr_url": "https://github.com/{{ repo.owner }}/{{ repo.name }}/pull/{{ pr.number }}"}}'
+          comment: checklist(branch, files, pr, repo)
