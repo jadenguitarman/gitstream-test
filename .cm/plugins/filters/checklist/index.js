@@ -49,12 +49,16 @@ module.exports = {
 				condition: true
 			}
 		];
+
+		const comment = checks
+			.map(check => `- [${check.condition ? "x" : " "}] ${check.label}`)
+			.join("\n");
+
+		console.log(comment)
 		
 		return callback(
 			null, 
-			checks
-				.map(check => `- [${check.condition ? "x" : " "}] ${check.label}`)
-				.join("\n")
+			comment
 		);
 	}
 }
