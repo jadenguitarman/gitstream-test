@@ -50,12 +50,10 @@ module.exports = {
 			}
 		];
 
-		const comment = checks
-			.map(check => `- [${check.condition ? "x" : " "}] ${check.label}`)
-			[0];
+		const comment = "Done" //checks
+			//.map(check => `- [${check.condition ? "x" : " "}] ${check.label}`)
+			//[0];
 			//.join("\n");
-
-		console.log("Done")
 		
 		return callback(
 			null, 
