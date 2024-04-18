@@ -55,7 +55,7 @@ module.exports = {
 			[0];
 			//.join("\n");
 
-		console.log(comment)
+		console.log("Done")
 		
 		return callback(
 			null, 
