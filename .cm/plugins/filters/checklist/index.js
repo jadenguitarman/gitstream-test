@@ -1,4 +1,4 @@
-const checklistFilter = async (empty, branch, files, pr, repo, callback) => { // made sync temporarily
+const checklistFilter = async (empty, branch, files, pr, repo, env, callback) => { // made sync temporarily
 	// Now that we have all the needed data here, we can use it to build our checklist
 	/*
 	console.log("Branch")
@@ -9,6 +9,8 @@ const checklistFilter = async (empty, branch, files, pr, repo, callback) => { //
 	console.log(pr)
 	console.log("Repo")
 	console.log(repo)
+ 	console.log("Env")
+	console.log(env)
 	// */
 	/* 
 		This is an array of objects, each of which represents a check.
@@ -19,50 +21,49 @@ const checklistFilter = async (empty, branch, files, pr, repo, callback) => { //
 		{
 			title: "low-risk",
 			label: "The PR is a low-risk change",
-			condition: true
+			// our sample definition of a low-risk change is a docs-only PR from designated docs writers
+			condition: files.every(file => /docs\//.test(file)) && pr.author_teams.includes("tech-writers")
 		},
 		{
 			title: "has-jira",
 			label: "The PR has a Jira reference in the title",
-			condition: true
+			condition: /\b[A-Za-z]+-\d+\b/.test(pr.title)
 		},
 		{
 			title: "updates-tests",
 			label: "The PR includes updates to tests",
-			condition: true
+			condition: files.some(file => /[^a-zA-Z0-9](spec|test|tests)[^a-zA-Z0-9]/.test(file))
 		},
 		{
 			title: "includes-docs",
 			label: "The PR includes reference documentation",
-			condition: true
+			condition: false
 		},
 		{
-			title: "includes-docs",
+			title: "first-time",
 			label: "The PR author is a first-time contributor",
-			condition: true
+			condition: repo.author_age < 1 && repo.age > 0 // if the PR author made their first contirbution on the current day
 		},
 		{
 			title: "requires-opsec",
 			label: "The PR requires OpSec approval",
-			condition: true
+			condition: true //files.some(file => (new RegExp(`[^a-zA-Z0-9](${[Object.values(env)].join("|")})[^a-zA-Z0-9]`, "g")).test(file))
 		}
 	];
+
+	console.log("files_metadata")
+	console.log(branch.diff.files_metadata)
 
 	const comment = await Promise.resolve(checks
 		.map(check => `- [${check.condition ? "x" : " "}] ${check.label}`)
 		.join("\n"));
-
-	/*
-	const comment = checks
-		.map(check => `- [${check.condition ? "x" : " "}] ${check.label}`)
-		.join("\n"); 
-  	// */
 	
 	return callback(
 		null, 
 		JSON.stringify(comment)
 	);
 };
+
 module.exports = {
 	async: true,
 	filter: checklistFilter
