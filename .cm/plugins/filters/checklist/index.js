@@ -2,7 +2,7 @@ module.exports = {
 	async: true,
 	filter: async (empty, branch, files, pr, repo, callback) => {
 		// Now that we have all the needed data here, we can use it to build our checklist
-
+		/*
 		console.log("Branch")
 		console.log(branch)
 		console.log("Files")
@@ -11,7 +11,7 @@ module.exports = {
 		console.log(pr)
 		console.log("Repo")
 		console.log(repo)
-
+		// */
 		/* 
   			This is an array of objects, each of which represents a check.
      			Not all *must* be true for the PR to be accepted, which is why
