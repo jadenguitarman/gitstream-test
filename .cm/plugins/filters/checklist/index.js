@@ -1,4 +1,4 @@
-const checklistFilter = async (empty, branch, files, pr, repo, env, callback) => { // made sync temporarily
+const checklistFilter = async (empty, branch, files, pr, repo, env, source, callback) => { // made sync temporarily
 	// Now that we have all the needed data here, we can use it to build our checklist
 	/*
 	console.log("Branch")
@@ -9,9 +9,14 @@ const checklistFilter = async (empty, branch, files, pr, repo, env, callback) =>
 	console.log(pr)
 	console.log("Repo")
 	console.log(repo)
- 	console.log("Env")
-	console.log(env)
 	// */
+
+	console.log("Env")
+	console.log(env)
+
+	console.log("Source")
+	console.log(source)
+	
 	/* 
 		This is an array of objects, each of which represents a check.
 		Not all *must* be true for the PR to be accepted, which is why
@@ -50,9 +55,6 @@ const checklistFilter = async (empty, branch, files, pr, repo, env, callback) =>
 			condition: true //files.some(file => (new RegExp(`[^a-zA-Z0-9](${[Object.values(env)].join("|")})[^a-zA-Z0-9]`, "g")).test(file))
 		}
 	];
-
-	console.log("files_metadata")
-	console.log(branch.diff.files_metadata)
 
 	const comment = await Promise.resolve(checks
 		.map(check => `- [${check.condition ? "x" : " "}] ${check.label}`)
