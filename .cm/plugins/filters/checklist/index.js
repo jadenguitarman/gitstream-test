@@ -53,20 +53,17 @@ const checklistFilter = async (empty, branch, files, pr, repo, callback) => { //
 		.join("\n"));
 
 	/*
-
 	const comment = checks
 		.map(check => `- [${check.condition ? "x" : " "}] ${check.label}`)
-		.join("\n"); // */
+		.join("\n"); 
+  	// */
 	
 	return callback(
 		null, 
 		comment
 	);
 };
-
-//*
 module.exports = {
 	async: true,
 	filter: checklistFilter
 }
-// */ module.exports = checklistFilter;
