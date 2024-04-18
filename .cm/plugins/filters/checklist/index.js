@@ -60,7 +60,7 @@ const checklistFilter = async (empty, branch, files, pr, repo, callback) => { //
 	
 	return callback(
 		null, 
-		comment
+		JSON.stringify(comment)
 	);
 };
 module.exports = {
