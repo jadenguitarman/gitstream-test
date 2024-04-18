@@ -52,7 +52,8 @@ module.exports = {
 
 		const comment = checks
 			.map(check => `- [${check.condition ? "x" : " "}] ${check.label}`)
-			.join("\n");
+			[0];
+			//.join("\n");
 
 		console.log(comment)
 		
