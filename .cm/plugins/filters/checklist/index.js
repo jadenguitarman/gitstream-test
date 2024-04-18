@@ -50,7 +50,7 @@ const checklistFilter = async (empty, branch, files, pr, repo, callback) => { //
 
 	const comment = await Promise.resolve(checks
 		.map(check => `- [${check.condition ? "x" : " "}] ${check.label}`)
-		.join(“\n”));
+		.join("\n"));
 
 	/*
 
