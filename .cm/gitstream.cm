@@ -6,7 +6,7 @@ manifest:
 automations:
   checklist: 
     if:
-      - {{ true }}
+      - true
     run:
       - action: add-comment@v1
         args:
