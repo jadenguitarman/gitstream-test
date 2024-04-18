@@ -48,10 +48,9 @@ const checklistFilter = (empty, branch, files, pr, repo, callback) => { // made 
 		}
 	];
 
-	const comment = "Done" //checks
-		//.map(check => `- [${check.condition ? "x" : " "}] ${check.label}`)
-		//[0];
-		//.join("\n");
+	const comment = checks
+		.map(check => `- [${check.condition ? "x" : " "}] ${check.label}`)
+		.join("\n"); // */
 	
 	return callback(
 		null, 
