@@ -1,4 +1,4 @@
-const checklistFilter = (empty, branch, files, pr, repo, callback) => { // made sync temporarily
+const checklistFilter = async (empty, branch, files, pr, repo, callback) => { // made sync temporarily
 	// Now that we have all the needed data here, we can use it to build our checklist
 	/*
 	console.log("Branch")
@@ -48,11 +48,15 @@ const checklistFilter = (empty, branch, files, pr, repo, callback) => { // made 
 		}
 	];
 
+	const comment = await Promise.resolve(checks
+		.map(check => `- [${check.condition ? "x" : " "}] ${check.label}`)
+		.join(“\n”));
+
+	/*
+
 	const comment = checks
 		.map(check => `- [${check.condition ? "x" : " "}] ${check.label}`)
 		.join("\n"); // */
-
-	return comment;
 	
 	return callback(
 		null, 
@@ -60,7 +64,7 @@ const checklistFilter = (empty, branch, files, pr, repo, callback) => { // made 
 	);
 };
 
-/*
+//*
 module.exports = {
 	async: true,
 	filter: checklistFilter
