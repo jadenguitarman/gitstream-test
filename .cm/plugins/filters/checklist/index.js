@@ -9,13 +9,12 @@ const checklistFilter = async (empty, branch, files, pr, repo, env, source, call
 	console.log(pr)
 	console.log("Repo")
 	console.log(repo)
+ 	console.log("Env")
+	console.log(env)
 	// */
 
-	console.log("Env")
-	console.log(env)
-
 	console.log("Source")
-	console.log(source)
+	console.log(source.diff.files.map(file => file.new_content))
 	
 	/* 
 		This is an array of objects, each of which represents a check.
@@ -51,8 +50,15 @@ const checklistFilter = async (empty, branch, files, pr, repo, env, source, call
 		},
 		{
 			title: "requires-opsec",
-			label: "The PR requires OpSec approval",
-			condition: true //files.some(file => (new RegExp(`[^a-zA-Z0-9](${[Object.values(env)].join("|")})[^a-zA-Z0-9]`, "g")).test(file))
+			label: "The PR doesn't expose any secrets",
+			condition: source.diff.files
+				.map(file => file.new_content)
+				.every(file_content => 
+					[
+						"MY_SECRET_ENVIRONMENT_VARIABLE"
+					].every(env_var => !file_content.includes(env_var)) 
+				       // nothing added to any file during this comment contains any of the secret environment variables in this array
+				)
 		}
 	];
 
