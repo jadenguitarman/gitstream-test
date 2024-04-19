@@ -65,7 +65,7 @@ const summarizeUnitTests = async (files, keywords, callback) => {
 		|| file.original_file.endsWith(keywords.testsExtension)
 		|| file.new_file.endsWith(keywords.testsExtension)
 	);
-	if (affectedFiles.length == 0) return callback(null, ""); // no tests have been added or modified
+	if (affectedFiles.length == 0) return callback(null, "Nothing"); // no tests have been added or modified
 
 	let testFileLines = {
 		New: [],
