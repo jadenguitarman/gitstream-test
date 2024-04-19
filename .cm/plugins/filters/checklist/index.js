@@ -1,20 +1,5 @@
 const checklistFilter = async (empty, branch, files, pr, repo, env, source, callback) => { // made sync temporarily
 	// Now that we have all the needed data here, we can use it to build our checklist
-	/*
-	console.log("Branch")
-	console.log(branch)
-	console.log("Files")
-	console.log(files)
-	console.log("PR")
-	console.log(pr)
-	console.log("Repo")
-	console.log(repo)
- 	console.log("Env")
-	console.log(env)
-	// */
-
-	console.log("Source")
-	console.log(source.diff.files.map(file => file.new_content))
 	
 	/* 
 		This is an array of objects, each of which represents a check.
