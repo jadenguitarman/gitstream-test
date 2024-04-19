@@ -78,24 +78,25 @@ const summarizeUnitTests = async (files, keywords, callback) => {
 		else if (!file.original_file) testFileLines.New.push(line);
 		else testFileLines.Renamed.push(line);
 	});
+
+	let comment = `## Changes to tests
+Below are all the changes that this PR made to identifiable tests.
+
+${
+	Object
+		.entries(testFileLines)
+		.map(([type, arr]) => arr.length
+			? [`### ${type} Tests - ${arr.length}`, ...arr].join("\n")
+			: ""
+		)
+		.filter(section => !!section) // filter out empty sections
+		.join("\n\n")
+}`;
+	console.log(comment)
 	
 	return callback(
 		null, 
-		JSON.stringify(`
-			## Changes to tests
-		 	Below are all the changes that this PR made to identifiable tests.
-		
-		   	${
-				Object
-					.entries(testFileLines)
-					.map(([type, arr]) => arr.length
-						? [`### ${type} Tests - ${arr.length}`, ...arr].join("\n")
-						: ""
-					)
-					.filter(section => !!section) // filter out empty sections
-					.join("\n\n")
-			}
- 		`)
+		JSON.stringify(comment)
 	);
 };
 
