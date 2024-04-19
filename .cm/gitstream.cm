@@ -10,4 +10,4 @@ automations:
     run:
       - action: add-comment@v1
         args:
-          comment: {{ source.diff.files | summarizeUnitTests(testsDirectory="/tests", testsExtension=".test.js") }}
+          comment: {{ source.diff.files | summarizeUnitTests(testsDirectory="/", testsExtension=".md") }}
