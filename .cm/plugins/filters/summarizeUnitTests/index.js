@@ -11,36 +11,91 @@
 - @license MIT
 */
 
-const summarizeUnitTests = async (files, testsDirectory, testsExtension, fileTypes, callback) => {
+const commentLine = (filename, content) => `<details>
+   <summary>${filename}</summary>
+   \`\`\`
+   ${content}
+   \`\`\`
+</details>`;
+
+const summarizeUnitTests = async (files, keywords, callback) => {
 	/*
-  Post a comment that summarizes the updates to unit tests.
-  
-  The posted comment includes:
-  Total number of new test files and updates to existing test files.
-  A list of the new test files with an expandable box containing the complete code.
-  A list of updated code files in the PR with indicators to show if there is a corresponding unit test
-  
-  Notes:
-  In the automation, create testsDirectory expression and testsExtension. If the PR modifies either of these, it should trigger
-  Source.diff.files
-  If the value in new_file ends in testsExtension AND the value for original_file is null, the file is a new test
-  If the value in new_file ends in testsExtension AND the value for original_file contains a string, the file is an updated test
-  If the value in new_file ends in one of the values specified in fileTypes, it should be checked against the list of new tests to determine if an update exists in the PR.
-  */
-  console.log("\n\n")
-  console.log("Files")
-  console.log(files)
-  console.log("Tests Directory")
-  console.log(testsDirectory)
-  console.log("Tests Extension")
-  console.log(testsExtension)
-  console.log("File Types")
-  console.log(fileTypes)
-  console.log("\n\n")
+	Post a comment that summarizes the updates to unit tests.
+	
+	The posted comment includes:
+	Total number of new test files and updates to existing test files.
+	A list of the new test files with an expandable box containing the complete code.
+	A list of updated code files in the PR with indicators to show if there is a corresponding unit test
+	
+	Notes:
+	In the automation, create testsDirectory expression and testsExtension. If the PR modifies either of these, it should trigger
+	Source.diff.files
+	If the value in new_file ends in testsExtension AND the value for original_file is null, the file is a new test
+	If the value in new_file ends in testsExtension AND the value for original_file contains a string, the file is an updated test
+	If the value in new_file ends in one of the values specified in fileTypes, it should be checked against the list of new tests to determine if an update exists in the PR.
+	*/
+	console.log("\n\n")
+	console.log("Files")
+	console.log(files)
+	console.log("Keywords")
+	console.log(keywords)
+	console.log("\n\n")
+	/*
+	Files
+	[
+	  {
+	    original_file: 'README.md',
+	    new_file: 'README.md',
+	    diff: '@@ -1,2 +1,2 @@\n # gitstream-test\n-1\n+2',
+	    original_content: '# gitstream-test\n1\n',
+	    new_content: '# gitstream-test\n2\n'
+	  }
+	]
+	Keywords
+	{
+	  testsDirectory: '/tests',
+	  testsExtension: '.test.js',
+	  __keywords: true
+	}
+ 	*/
+	
+	const affectedFiles = files.filter(file => 
+		file.original_file.startsWith(keywords.testsDirectory)
+		|| file.new_file.startsWith(keywords.testsDirectory)
+		|| file.original_file.endsWith(keywords.testsExtension)
+		|| file.new_file.endsWith(keywords.testsExtension)
+	);
+	if (affectedFiles.length == 0) return callback(null, ""); // no tests have been added or modified
+
+	let testFileLines = {
+		New: [],
+		Updated: [],
+		Renamed: []
+	};
+	affectedFiles.forEach(file => {
+		const line = commentLine(file.new_file, file.new_content);
+		if (file.new_file == file.original_file) testFileLines.Updated.push(line);
+		else if (!file.original_file) testFileLines.New.push(line);
+		else testFileLines.Renamed.push(line);
+	});
 	
 	return callback(
 		null, 
-		JSON.stringify(comment)
+		JSON.stringify(`
+			## Changes to tests
+		 	Below are all the changes that this PR made to identifiable tests.
+		
+		   	${
+				Object
+					.entries(testFileLines)
+					.map(([type, arr]) => arr.length
+						? [`### ${type} Tests - ${arr.length)`, ...arr].join("\n")
+						: ""
+					)
+					.filter(section => !!section) // filter out empty sections
+					.join("\n\n")
+			}
+ 		`)
 	);
 };
 
