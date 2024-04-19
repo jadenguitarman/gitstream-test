@@ -89,7 +89,7 @@ const summarizeUnitTests = async (files, keywords, callback) => {
 				Object
 					.entries(testFileLines)
 					.map(([type, arr]) => arr.length
-						? [`### ${type} Tests - ${arr.length)`, ...arr].join("\n")
+						? [`### ${type} Tests - ${arr.length}`, ...arr].join("\n")
 						: ""
 					)
 					.filter(section => !!section) // filter out empty sections
