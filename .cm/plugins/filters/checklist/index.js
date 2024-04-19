@@ -40,8 +40,8 @@ const checklistFilter = async (empty, branch, files, pr, repo, env, source, call
 		},
 		{
 			title: "includes-docs",
-			label: "The PR includes reference documentation",
-			condition: false
+			label: "The PR includes changes to the documentation",
+			condition: files.some(file => /docs\//.test(file))
 		},
 		{
 			title: "first-time",
