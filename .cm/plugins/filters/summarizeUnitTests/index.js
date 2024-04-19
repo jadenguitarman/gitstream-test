@@ -12,10 +12,10 @@
 */
 
 const commentLine = (filename, content) => `<details>
-   <summary>${filename}</summary>
-   \`\`\`
-   ${content}
-   \`\`\`
+<summary>${filename}</summary>
+\`\`\`
+${content}
+\`\`\`
 </details>`;
 
 const summarizeUnitTests = async (files, keywords, callback) => {
