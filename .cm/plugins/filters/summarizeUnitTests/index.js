@@ -13,6 +13,7 @@
 
 const commentLine = (filename, content) => `<details>
 <summary>${filename}</summary>
+
 \`\`\`
 ${content}
 \`\`\`
@@ -86,11 +87,11 @@ ${
 	Object
 		.entries(testFileLines)
 		.map(([type, arr]) => arr.length
-			? [`### ${type} Tests - ${arr.length}`, ...arr].join("\n")
+			? [`### ${type} Tests - ${arr.length}`, ...arr].join("\n\n")
 			: ""
 		)
 		.filter(section => !!section) // filter out empty sections
-		.join("\n\n")
+		.join("\n\n\n")
 }`;
 	console.log(comment)
 	
