@@ -35,30 +35,9 @@ const summarizeUnitTests = async (files, keywords, callback) => {
 	If the value in new_file ends in testsExtension AND the value for original_file contains a string, the file is an updated test
 	If the value in new_file ends in one of the values specified in fileTypes, it should be checked against the list of new tests to determine if an update exists in the PR.
 	*/
-	console.log("\n\n")
-	console.log("Files")
-	console.log(files)
-	console.log("Keywords")
-	console.log(keywords)
-	console.log("\n\n")
-	/*
-	Files
-	[
-	  {
-	    original_file: 'README.md',
-	    new_file: 'README.md',
-	    diff: '@@ -1,2 +1,2 @@\n # gitstream-test\n-1\n+2',
-	    original_content: '# gitstream-test\n1\n',
-	    new_content: '# gitstream-test\n2\n'
-	  }
-	]
-	Keywords
-	{
-	  testsDirectory: '/tests',
-	  testsExtension: '.test.js',
-	  __keywords: true
-	}
- 	*/
+
+	let affectedFilesComment = "";
+	let testFinderComment = "";
 	
 	const affectedFiles = files.filter(file => 
 		file.original_file.startsWith(keywords.testsDirectory)
@@ -66,21 +45,20 @@ const summarizeUnitTests = async (files, keywords, callback) => {
 		|| file.original_file.endsWith(keywords.testsExtension)
 		|| file.new_file.endsWith(keywords.testsExtension)
 	);
-	if (affectedFiles.length == 0) return callback(null, "Nothing"); // no tests have been added or modified
-
-	let testFileLines = {
-		New: [],
-		Updated: [],
-		Renamed: []
-	};
-	affectedFiles.forEach(file => {
-		const line = commentLine(file.new_file, file.new_content);
-		if (file.new_file == file.original_file) testFileLines.Updated.push(line);
-		else if (!file.original_file) testFileLines.New.push(line);
-		else testFileLines.Renamed.push(line);
-	});
-
-	let comment = `## Changes to tests
+	if (affectedFiles.length != 0) {
+		let testFileLines = {
+			New: [],
+			Updated: [],
+			Renamed: []
+		};
+		affectedFiles.forEach(file => {
+			const line = commentLine(file.new_file, file.new_content);
+			if (file.new_file == file.original_file) testFileLines.Updated.push(line);
+			else if (!file.original_file) testFileLines.New.push(line);
+			else testFileLines.Renamed.push(line);
+		});
+	
+		affectedFilesComment = `## Changes to tests
 Below are all the changes that this PR made to identifiable tests.
 
 ${
@@ -93,9 +71,42 @@ ${
 		.filter(section => !!section) // filter out empty sections
 		.join("\n\n\n")
 }`;
-	console.log(comment)
-	
-	return callback(
+		
+	}
+
+	if (Array.isArray(keywords.fileTypes) && !!keywords.fileTypes.length && !!keywords.testsExtension) {
+		let needTestFiles = {};
+		files.forEach(file => {
+			keyword.fileTypes.forEach(ext => {
+				if (file.new_file.endsWith(ext)) {
+					needTestFiles[ext] = !needTestFiles[ext] 
+						? [file.new_file] 
+						: [...needTestFiles[ext], file.new_file];
+				}
+			});
+		});
+
+		const newFilePaths = files.map(file => file.new_file);
+		testFinderComment = [
+			`## Files modified by this PR with extension in ${JSON.stringify(keywords.fileTypes)}`,
+			...(
+				Object
+					.entries(needTestFiles)
+					.map(([ext, path]) => 
+						[path, path.slice(0, path.lastIndexOf(ext)) + keywords.testsExtension}]
+					)
+					.map(([codePath, testPath]) => newFilePaths.includes(testPath)
+						? `- ${codePath} -> test found at ${testPath} was modified or added by this PR`
+						: `- ${codePath} -> no matching test was modified by this PR`
+					)
+			)
+		].join("\n");
+	}
+
+	const comment = [affectedFilesComment, testFinderComment].filter(x => !!x).join("\n\n\n");
+	console.log(comment);
+	if (!comment) return callback(null, ""); // no tests have been added or modified
+	else return callback(
 		null, 
 		JSON.stringify(comment)
 	);
