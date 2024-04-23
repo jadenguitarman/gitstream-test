@@ -86,6 +86,9 @@ ${
 			});
 		});
 
+		console.log("\n\nneedTestFiles");
+		console.log(needTestFiles);
+
 		const newFilePaths = files.map(file => file.new_file);
 		testFinderComment = [
 			`## Files modified by this PR with extension in ${JSON.stringify(keywords.fileTypes)}`,
