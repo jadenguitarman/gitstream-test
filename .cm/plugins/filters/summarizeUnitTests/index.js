@@ -77,7 +77,7 @@ ${
 	if (Array.isArray(keywords.fileTypes) && !!keywords.fileTypes.length && !!keywords.testsExtension) {
 		let needTestFiles = {};
 		files.forEach(file => {
-			keyword.fileTypes.forEach(ext => {
+			keywords.fileTypes.forEach(ext => {
 				if (file.new_file.endsWith(ext)) {
 					needTestFiles[ext] = !needTestFiles[ext] 
 						? [file.new_file] 
