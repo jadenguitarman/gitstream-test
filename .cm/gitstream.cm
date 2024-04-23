@@ -3,7 +3,7 @@
 manifest:
   version: 1.0
 
-comment_text: {{ source.diff.files | summarizeUnitTests(testsDirectory="/", testsExtension=".md", fileTypes=[".md"]) }}
+comment_text: {{ source.diff.files | summarizeUnitTests(testsDirectory="/", testsExtension=".test.md", fileTypes=[".md"]) }}
 
 automations:
   checklist: 
