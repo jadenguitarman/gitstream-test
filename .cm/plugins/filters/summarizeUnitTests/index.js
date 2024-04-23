@@ -93,7 +93,7 @@ ${
 				Object
 					.entries(needTestFiles)
 					.map(([ext, path]) => 
-						[path, path.slice(0, path.lastIndexOf(ext)) + keywords.testsExtension}]
+						[path, path.slice(0, path.lastIndexOf(ext)) + keywords.testsExtension]
 					)
 					.map(([codePath, testPath]) => newFilePaths.includes(testPath)
 						? `- ${codePath} -> test found at ${testPath} was modified or added by this PR`
