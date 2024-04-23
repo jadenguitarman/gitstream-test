@@ -95,13 +95,12 @@ ${
 			...(
 				Object
 					.entries(needTestFiles)
-					.map(([ext, path]) => 
-						[path, path.slice(0, path.lastIndexOf(ext)) + keywords.testsExtension]
-					)
-					.map(([codePath, testPath]) => newFilePaths.includes(testPath)
-						? `- ${codePath} -> test found at ${testPath} was modified or added by this PR`
-						: `- ${codePath} -> no matching test was modified by this PR`
-					)
+					.map(([ext, path]) => {
+						const testPath = path.slice(0, path.lastIndexOf(ext)) + keywords.testsExtension;
+						return newFilePaths.includes(testPath)
+							? `- ${path} -> test found at ${testPath} was modified or added by this PR`
+							: `- ${path} -> no matching test was modified by this PR`
+					})
 			)
 		].join("\n");
 	}
